@@ -279,3 +279,36 @@ class EpsilonDominanceComparator(DominanceComparator):
                 return 1
             else:
                 return -1
+
+class ProposalSolutionsComparator(Comparator):
+    def compare(self, solution1: Solution, solution2: Solution) -> int:
+        if solution1 is None:
+            return 1
+        elif solution2 is None:
+            return -1
+
+        dominate1 = 0
+        dominate2 = 0
+
+        for i in range(len(solution1.objectives)):
+            value1 = solution1.objectives[i]
+            value2 = solution2.objectives[i]
+
+            if value1 < value2:
+                flag = (((value1*100)/value2)-100)*-1
+            elif value1 > value2:
+                flag = (((value2*100)/value1)-100)
+            else:
+                flag = 0
+
+            if sum(flag) > 1:
+                dominate1 = 1
+            if sum(flag) < 1:
+                dominate2 = 1
+
+        if dominate1 == 0 and dominate2 == 0:
+            return 0
+        elif dominate1 == 1:
+            return -1
+        elif dominate2 == 1:
+            return 1
