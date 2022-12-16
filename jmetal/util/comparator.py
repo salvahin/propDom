@@ -281,7 +281,22 @@ class EpsilonDominanceComparator(DominanceComparator):
                 return -1
 
 class ProposalSolutionsComparator(Comparator):
+     """
+        This function is a dominance proposal.
+         Input :
+         Comparator: object of class comparator
+
+    """
     def compare(self, solution1: Solution, solution2: Solution) -> int:
+         """
+        This function compares the pareto fron with a possible solution.
+         Input :
+         solution1: Possible solution
+         solution2: pareto front
+        Output :
+        processed_data: A integer that indicates if it dominantes or not 
+
+    """
         if solution1 is None:
             return 1
         elif solution2 is None:
@@ -291,11 +306,15 @@ class ProposalSolutionsComparator(Comparator):
         dominate2 = 0
 
         for i in range(len(solution1.objectives)):
+            #Obtain the value for the possible soultion and the possible pareto front
             value1 = solution1.objectives[i]
             value2 = solution2.objectives[i]
 
+            #for the case that the possible solution is better a relationship is calculated
             if value1 < value2:
                 flag = (((value1*100)/value2)-100)*-1
+
+            #For the opposite case 
             elif value1 > value2:
                 flag = (((value2*100)/value1)-100)
             else:
